@@ -1,15 +1,24 @@
-		<%= link_to 'Voltar', promotions_path %>
-		
+  <%= flash[:notice] %>
+	<%= link_to 'Voltar', promotions_path %>
+
 		<h3> <%= @promotion.name %> </h3>
 		<dl>
 			<dt> Descrição </dt>
 			  <dd> <%= @promotion.description %> </dd>
-			<dt> Desconto: </dt>	
+			<dt> Desconto: </dt>
 			  <dd> <%= number_to_percentage @promotion.discount_rate, separator: ',', precision: 2 %> </dd>
-			<dt> Código </dt>  
+			<dt> Código </dt>
 			  <dd> <%= @promotion.code %> </dd>
 			<dt> Data de término </dt>
 			  <dd> <%= @promotion.expiration_date.strftime '%d/%m/%Y' %> </dd>
 			<dt> Quantidade de cupons </dt>
-			  <dd> <%= @promotion.coupon_quantity %> </dd>  
+			  <dd> <%= @promotion.coupon_quantity %> </dd>
 		</dl>
+
+  <% if @promotion.coupons.empty? %>
+    <%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post %>
+  <% end %>
+
+  <% @promotion.coupons.each do |coupon| %>
+    <p> <%= coupon.code %> </p>
+  <% end %>
