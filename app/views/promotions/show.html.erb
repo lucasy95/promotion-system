@@ -3,17 +3,19 @@
 
 		<h3> <%= @promotion.name %> </h3>
 		<dl>
-			<dt> Descrição </dt>
+			<dt> Descrição: </dt>
 			  <dd> <%= @promotion.description %> </dd>
 			<dt> Desconto: </dt>
 			  <dd> <%= number_to_percentage @promotion.discount_rate, separator: ',', precision: 2 %> </dd>
-			<dt> Código </dt>
+			<dt> Código: </dt>
 			  <dd> <%= @promotion.code %> </dd>
-			<dt> Data de término </dt>
+			<dt> Data de término: </dt>
 			  <dd> <%= @promotion.expiration_date.strftime '%d/%m/%Y' %> </dd>
-			<dt> Quantidade de cupons </dt>
+			<dt> Quantidade de cupons: </dt>
 			  <dd> <%= @promotion.coupon_quantity %> </dd>
 		</dl>
+
+  <%= link_to 'Editar', edit_promotion_path(@promotion) %>
 
   <% if @promotion.coupons.empty? %>
     <%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post %>

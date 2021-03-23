@@ -144,4 +144,19 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_no_text 'NATAL10-0101'
 
   end
+
+  test 'edit promotion' do
+    promotion = Promotion.create!(name: 'Dia das maes', description: 'Promoção de Dia das Mães',
+                      code: 'DM2021', discount_rate: 50, coupon_quantity: 30,
+                      expiration_date: '01/12/2021')
+                      
+    visit promotion_path(promotion)
+    click_on 'Editar'
+    assert_text 'EDITAR PROMOÇÃO'
+    fill_in 'Nome', with: 'Dia dos pais'
+    click_on 'Editar promoção'
+    assert_text 'Dia dos pais'
+    assert_no_text 'Dia das maes'
+  end
+
 end

@@ -1,15 +1,13 @@
-<h2> REGISTRAR PROMOÇÃO </h2>
-
-<% if @promotion.errors.any? %>
+<% if promotion.errors.any? %>
 <h4> Ocorreu os seguintes erros: </h4>
 <ul>
-  <% @promotion.errors.full_messages.each do |message| %>
+  <% promotion.errors.full_messages.each do |message| %>
     <li>  <%= message %> </li>
   <% end %>
 </ul>
 <% end %>
 
-<%= form_with model: @promotion do |f| %>
+<%= form_with model: promotion do |f| %>
   <div>
     <%= f.label :name, 'Nome: ' %>
     <%= f.text_field :name %>
@@ -41,7 +39,7 @@
   </div>
 
   <div>
-    <%= f.submit 'Criar promoção' %>
+    <%= f.submit 'Editar promoção' %>
   </div>
 
 <% end %>
