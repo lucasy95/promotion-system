@@ -17,6 +17,8 @@
 
   <%= link_to 'Editar', edit_promotion_path(@promotion) %>
 
+  <%= link_to "Deletar", promotion_path(@promotion), method: :delete %>
+
   <% if @promotion.coupons.empty? %>
     <%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post %>
   <% end %>

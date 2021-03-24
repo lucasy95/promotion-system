@@ -24,6 +24,12 @@ class PromotionsController < ApplicationController
 		@promotion = Promotion.new
 	end
 
+  def destroy
+    @promotion = Promotion.find(params[:id])
+    @promotion.destroy
+    redirect_to promotions_path
+  end
+
 	def create
 		@promotion = Promotion.new(promotion_params)
 		if
