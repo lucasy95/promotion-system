@@ -13,3 +13,28 @@
  *= require_tree .
  *= require_self
  */
+
+ table{
+   width: 50%;
+   border: 2px solid black;
+   border-collapse: collapse;
+   border-spacing: 5px;
+ }
+
+ tr:nth-child(odd) {
+   background-color: #a4a8a8;
+ }
+
+ th.h {
+   height: 50px;
+   background-color: #828788;
+ }
+
+ th {
+   height: 50px;
+ }
+
+ td {
+   padding: 20px;
+   text-align: center;
+ }

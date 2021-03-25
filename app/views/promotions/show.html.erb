@@ -1,28 +1,57 @@
-	<%= link_to 'Voltar', promotions_path %>
+<%= link_to 'Voltar', promotions_path %>
 
-		<h3> <%= @promotion.name %> </h3>
-		<dl>
-			<dt> <%= Promotion.human_attribute_name(:description) %> </dt>
-			  <dd> <%= @promotion.description %> </dd>
-			<dt> <%= Promotion.human_attribute_name(:discount_rate) %> </dt>
-			  <dd> <%= number_to_percentage @promotion.discount_rate, precision: 2 %> </dd>
-			<dt> <%= Promotion.human_attribute_name(:code) %> </dt>
-			  <dd> <%= @promotion.code %> </dd>
-			<dt> <%= Promotion.human_attribute_name(:expiration_date) %> </dt>
-			  <dd> <%= I18n.localize @promotion.expiration_date %> </dd>
-			<dt> <%= Promotion.human_attribute_name(:coupon_quantity) %> </dt>
-			  <dd> <%= @promotion.coupon_quantity %> </dd>
-		</dl>
+	<table>
+			<tr>
+			  <th><%= Promotion.human_attribute_name(:name) %></th>
+				<td> <%= @promotion.name %> </td>
+			</tr>
+	  	<tr>
+	    	<th><%= Promotion.human_attribute_name(:description) %></th>
+				<td>  <%= @promotion.description %></td>
+			</tr>
+			<tr>
+	 			<th><%= Promotion.human_attribute_name(:discount_rate) %></th>
+	 			<td><%= number_to_percentage @promotion.discount_rate, precision: 2 %> </td>
+	 		</tr>
+			<tr>
+				<th><%= Promotion.human_attribute_name(:code) %></th>
+				<td><%= @promotion.code %></td>
+			</tr>
+			<tr>
+				<th><%= Promotion.human_attribute_name(:expiration_date) %></th>
+				<td><%= I18n.localize @promotion.expiration_date %></td>
+			</tr>
+			<tr>
+				<th><%= Promotion.human_attribute_name(:coupon_quantity) %></th>
+				<td><%= @promotion.coupon_quantity %></td>
+			</tr>
+			<tr>
+				<th> Ação </th>
+				<td>
+					<%= link_to 'Editar', edit_promotion_path(@promotion) %>
+					<%= link_to "Deletar", promotion_path(@promotion), method: :delete %>
+					<% unless @promotion.coupons? %>
+						<%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post %>
+					<% end %>
+				</td>
+			</tr>
+	</table>
 
+	<table>
+		<tr>
+			<th class = "h"> Código do Cupom </th>
+			<th class = "h"> Situação </th>
+		</tr>
 
-  <%= link_to 'Editar', edit_promotion_path(@promotion) %>
-
-  <%= link_to "Deletar", promotion_path(@promotion), method: :delete %>
-
-  <% unless @promotion.coupons? %>
-    <%= link_to 'Gerar cupons', generate_coupons_promotion_path(@promotion), method: :post %>
-  <% end %>
-
-  <% @promotion.coupons.each do |coupon| %>
-    <p> <%= coupon.code %> </p>
-  <% end %>
+		<% @promotion.coupons.each do |coupon| %>
+		<tr>
+			<td>
+				    <%= "#{coupon.code}" %>
+						<% if coupon.active?%>
+				    <%= link_to 'Desabilitar', disable_coupon_path(coupon), method: :post %> <!-- precisa especificar o caminho do path-->
+				    <% end %>
+			</td>
+			<td> <%= "(#{Coupon.human_attribute_name("status.#{coupon.status}")})" %> </td>
+		<% end %>
+    </tr>
+  </table>

@@ -6,4 +6,8 @@ Rails.application.routes.draw do
 		post 'generate_coupons', on: :member
 	end
 
+	resources :coupons, only: [] do
+		post 'disable', on: :member    #especificar cupom/ ñ pode ser get
+	end
+
 end

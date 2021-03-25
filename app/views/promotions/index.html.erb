@@ -7,14 +7,15 @@
 		<h3> Nenhuma promoção cadastrada </h3>
 	<% end %>
 
-
-	<% @promotions.each do |promotion| %>
-		<h3> <%= link_to promotion.name, promotion %> </h3>
-		<dl>
-			<dt> Descrição: </dt>
-			  <dd><%= promotion.description %></dd>
-			<dt> Desconto: </dt>
-			  <dd> <%= number_to_percentage promotion.discount_rate, separator: ',', precision: 2 %> </dd>
-		</dl>
-
+<table>
+	<tr>
+		<th class = "h"> Promoção: </th>
+	  <th class = "h"> Descrição: </th>
+		<th class = "h"> Desconto: </th>
+				<% @promotions.each do |promotion| %>
+			<td> <%= link_to promotion.name, promotion %> </td>
+			<td> <%= promotion.description %> </td>
+			<td> <%= number_to_percentage promotion.discount_rate, separator: ',', precision: 2 %> </td>
+	</tr>
 	<% end %>
+</table>
