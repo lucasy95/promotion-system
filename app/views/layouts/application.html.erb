@@ -11,6 +11,8 @@
   </head>
 
   <body>
+    <p><%= flash[:notice] %></p>   <!-- p/ ñ precisar colocar em todas as views -->
+    <p><%= flash[:alert] %></p>
     <%= yield %>
   </body>
 </html>

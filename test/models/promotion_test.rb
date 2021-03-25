@@ -22,7 +22,7 @@ class PromotionTest < ActiveSupport::TestCase
     promotion = Promotion.new(code: 'NATAL10')
 
     refute promotion.valid?
-    assert_includes promotion.errors[:code], 'deve ser único'
+    assert_includes promotion.errors[:code], 'já está em uso'
 
   end
 
@@ -33,7 +33,7 @@ class PromotionTest < ActiveSupport::TestCase
     promotion = Promotion.new(name: 'Natal')
 
     refute promotion.valid?
-    assert_includes promotion.errors[:name], 'deve ser único'
+    assert_includes promotion.errors[:name], 'já está em uso'
 
   end
 

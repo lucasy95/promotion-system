@@ -1,18 +1,16 @@
-  <%= flash[:notice] %>
-
 	<%= link_to 'Voltar', promotions_path %>
 
 		<h3> <%= @promotion.name %> </h3>
 		<dl>
-			<dt> Descrição: </dt>
+			<dt> <%= Promotion.human_attribute_name(:description) %> </dt>
 			  <dd> <%= @promotion.description %> </dd>
-			<dt> Desconto: </dt>
-			  <dd> <%= number_to_percentage @promotion.discount_rate, separator: ',', precision: 2 %> </dd>
-			<dt> Código: </dt>
+			<dt> <%= Promotion.human_attribute_name(:discount_rate) %> </dt>
+			  <dd> <%= number_to_percentage @promotion.discount_rate, precision: 2 %> </dd>
+			<dt> <%= Promotion.human_attribute_name(:code) %> </dt>
 			  <dd> <%= @promotion.code %> </dd>
-			<dt> Data de término: </dt>
-			  <dd> <%= @promotion.expiration_date.strftime '%d/%m/%Y' %> </dd>
-			<dt> Quantidade de cupons: </dt>
+			<dt> <%= Promotion.human_attribute_name(:expiration_date) %> </dt>
+			  <dd> <%= I18n.localize @promotion.expiration_date %> </dd>
+			<dt> <%= Promotion.human_attribute_name(:coupon_quantity) %> </dt>
 			  <dd> <%= @promotion.coupon_quantity %> </dd>
 		</dl>
 
