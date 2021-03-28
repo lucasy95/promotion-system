@@ -9,7 +9,9 @@ class PromotionsTest < ApplicationSystemTestCase
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
                       expiration_date: '22/12/2033')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'testando')
 
+    login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
 
@@ -29,7 +31,9 @@ class PromotionsTest < ApplicationSystemTestCase
                       description: 'Promoção de Cyber Monday',
                       code: 'CYBER15', discount_rate: 15,
                       expiration_date: '22/12/2033')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
 
+    login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
     click_on 'Cyber Monday'
@@ -43,6 +47,9 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'no promotion are available' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+
+    login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
 
@@ -53,7 +60,9 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
 
+    login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
     click_on 'Voltar'
@@ -65,7 +74,9 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
 
+    login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
     click_on 'Natal'
@@ -73,12 +84,12 @@ class PromotionsTest < ApplicationSystemTestCase
 
     assert_current_path promotions_path
   end
-end
 
-require 'application_system_test_case'
-
-class PromotionsTest < ApplicationSystemTestCase
   test 'create promotion' do
+
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+
+    login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar uma promoção'
@@ -99,12 +110,11 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text '90'
     assert_link 'Voltar'
   end
-end
 
-require 'application_system_test_case'
-
-class PromotionsTest < ApplicationSystemTestCase
   test 'create and attributes cannot be blank' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+
+    login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar uma promoção'
@@ -117,7 +127,9 @@ class PromotionsTest < ApplicationSystemTestCase
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
 
+    login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar uma promoção'
@@ -132,6 +144,9 @@ class PromotionsTest < ApplicationSystemTestCase
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+
+    login_as usuario, scope: :user
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
@@ -149,7 +164,9 @@ class PromotionsTest < ApplicationSystemTestCase
     promotion = Promotion.create!(name: 'Dia das maes', description: 'Promoção de Dia das Mães',
                       code: 'DM2021', discount_rate: 50, coupon_quantity: 30,
                       expiration_date: '01/12/2021')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
 
+    login_as usuario, scope: :user
     visit promotion_path(promotion)
     click_on 'Editar'
     assert_text 'EDITAR PROMOÇÃO'
@@ -157,6 +174,33 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Atualizar Promoção'
     assert_text 'Dia dos pais'
     assert_no_text 'Dia das maes'
+  end
+
+  test 'dont view promotion link without login' do
+    visit root_path
+
+    assert_no_link 'Promoções'
+  end
+
+  test 'dont view promotions using route without login' do
+    visit promotions_path
+
+    assert_current_path new_user_session_path
+  end
+
+  test 'view promotion details without login' do
+    promotion = Promotion.create!(name: 'Dia das maes', description: 'Promoção de Dia das Mães',
+                          code: 'DM2021', discount_rate: 50, coupon_quantity: 30,
+                          expiration_date: '01/12/2021')
+
+    visit promotion_path(promotion)
+
+    assert_current_path new_user_session_path
+  end
+
+  test 'create promotion without login -> sign in' do
+    visit new_promotion_path
+    assert_current_path new_user_session_path
   end
 
 end
