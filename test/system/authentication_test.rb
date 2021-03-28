@@ -33,9 +33,21 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_no_link 'Cadastrar'
   end
 
-  # TODO: deslogar
+  test 'logout' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+
+    login_as usuario, scope: :user
+
+    visit root_path
+    assert_no_link 'Cadastrar'
+    assert_no_link 'Entrar'
+    assert_link 'Promoções'
+    click_on 'Sair'
+    assert_text 'Você saiu da sua conta.'
+  end
+
   # TODO: erros no cadastrar
   # TODO: erro ao logar
-  # TOOD: Usuario.name 
+  # TOOD: Usuario.name
 
 end
