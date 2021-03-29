@@ -132,7 +132,7 @@ pt-BR:
       taken: já está em uso
       too_long:
         one: 'é muito longo (máximo: 1 caracter)'
-        other: 'é muito longo (máximo: %{count} caracteres)'
+        other: 'é muito longa (máximo: %{count} caracteres)'
       too_short:
         one: 'é muito curto (mínimo: 1 caracter)'
         other: 'é muito curto (mínimo: %{count} caracteres)'
