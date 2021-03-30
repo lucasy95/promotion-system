@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PromotionSystem</title>
+    <title>Promotion System</title>
   <nav>
+    <ul>
+    <li><%= link_to 'Início', root_path %></li>
+    <li><%= link_to 'Categorias', categories_path %>
     <% if user_signed_in? %>
-      <%= current_user.email %>
-      <%= link_to 'Sair', destroy_user_session_path, method: :delete %>
-      <%= link_to 'Promoções', promotions_path %>
+      <li><%= link_to 'Promoções', promotions_path %></li>
+      <li><%= link_to 'Sair', destroy_user_session_path, method: :delete %></li>
+      <li><%= current_user.email %></li>
     <% else %>
-      <%= link_to 'Cadastrar', new_user_registration_path %>
-      <%= link_to 'Entrar', new_user_session_path %>
+      <li><%= link_to 'Cadastrar', new_user_registration_path %></li>
+      <li><%= link_to 'Entrar', new_user_session_path %></li>
     <% end %>
+      <li><%= flash[:notice] %></li>
+      <li><%= flash[:alert] %></li>
+    </ul>
   </nav>
 
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -22,8 +28,6 @@
   </head>
 
   <body>
-    <p><%= flash[:notice] %></p>   <!-- p/ ñ precisar colocar em todas as views -->
-    <p><%= flash[:alert] %></p>
     <%= yield %>
   </body>
 </html>

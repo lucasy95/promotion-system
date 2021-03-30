@@ -8,40 +8,39 @@
 <% end %>
 
 <%= form_with model: promotion do |f| %>
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
+<ul>
+    <li><%= f.label :name %> </li><br>
+    <li><%= f.text_field :name %></li>
+</ul>
+<ul>
+    <li><%= f.label :description %></li> <br>
+    <li><%= f.text_area :description %></li>
+</ul>
+<ul>
+    <li><%= f.label :code %> </li><br>
+    <li><%= f.text_field :code %></li>
+</ul>
 
-  <div>
-    <%= f.label :description %>
-    <%= f.text_area :description %>
-  </div>
-
-  <div>
-    <%= f.label :code %>
-    <%= f.text_field :code %>
-  </div>
-
-  <div>
-    <%= f.label :discount_rate %>
-    <%= f.number_field :discount_rate, within: 0..100 %>
-  </div>
+  <ul>
+    <li><%= f.label :discount_rate %></li> <br>
+    <li><%= f.number_field :discount_rate, within: 0..100 %></li>
+  </ul>
 
   <% unless @promotion.coupons? %>
-  <div>
-    <%= f.label :coupon_quantity %>
-    <%= f.number_field :coupon_quantity, min: 1 %>
-  </div>
+  <ul>
+    <li><%= f.label :coupon_quantity %></li> <br>
+    <li><%= f.number_field :coupon_quantity, min: 1 %></li>
+  </ul>
   <% end %>
 
-  <div>
-    <%= f.label :expiration_date %>
-    <%= f.text_field :expiration_date %>
-  </div>
+  <ul>
+    <li><%= f.label :expiration_date %> <br></li>
+    <li><%= f.text_field :expiration_date %></li>
 
-  <div>
-    <%= f.submit %>
-  </div>
+  </ul>
+
+  <ul>
+    <li> <%= f.submit %> </li>
+  </ul>
 
 <% end %>

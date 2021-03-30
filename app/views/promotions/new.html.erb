@@ -1,45 +1,58 @@
 <h2> REGISTRAR PROMOÇÃO </h2>
 
 <% if @promotion.errors.any? %>
-<h4> Ocorreu os seguintes erros: </h4>
-<ul>
-  <% @promotion.errors.full_messages.each do |message| %>
-    <li>  <%= message %> </li>
-  <% end %>
-</ul>
+  <h4> Ocorreu os seguintes erros: </h4>
 <% end %>
 
 <%= form_with model: @promotion do |f| %>
   <div>
-    <%= f.label :name %>
+    <%= f.label :name %> <br>
     <%= f.text_field :name %>
+    <% @promotion.errors.full_messages_for(:name).each do |message| %>
+     <%= message %>
+    <% end %>
   </div>
-
+ <p></p>
   <div>
-    <%= f.label :description %>
+    <%= f.label :description %> <br>
     <%= f.text_area :description %>
+    <% @promotion.errors.full_messages_for(:description).each do |message| %>
+     <%= message %>
+    <% end %>
   </div>
-
+ <p></p>
   <div>
-    <%= f.label :code %>
+    <%= f.label :code %> <br>
     <%= f.text_field :code %>
+    <% @promotion.errors.full_messages_for(:code).each do |message| %>
+     <%= message %>
+    <% end %>
   </div>
-
+ <p></p>
   <div>
-    <%= f.label :discount_rate %>
+    <%= f.label :discount_rate %> <br>
     <%= f.number_field :discount_rate, within: 0..100 %>
+    <% @promotion.errors.full_messages_for(:discount_rate).each do |message| %>
+     <%= message %>
+    <% end %>
   </div>
-
+ <p></p>
   <div>
-    <%= f.label :coupon_quantity %>
+    <%= f.label :coupon_quantity %> <br>
     <%= f.number_field :coupon_quantity, min: 1 %>
+    <% @promotion.errors.full_messages_for(:coupon_quantity).each do |message| %>
+     <%= message %>
+    <% end %>
   </div>
-
+ <p></p>
   <div>
-    <%= f.label :expiration_date %>
+    <%= f.label :expiration_date %> <br>
     <%= f.text_field :expiration_date %>
+    <% @promotion.errors.full_messages_for(:expiration_date).each do |message| %>
+     <%= message %>
+    <% end %>
   </div>
-
+ <p></p>
   <div>
     <%= f.submit %>
   </div>

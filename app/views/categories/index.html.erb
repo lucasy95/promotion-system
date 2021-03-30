@@ -1,0 +1,16 @@
+<h3> CATEGORIAS </h3>
+
+<%= link_to 'Nova Categoria', new_category_path %>
+
+<table>
+	<tr>
+		<th class = "h"> Nome: </th>
+	  <th class = "h"> Código: </th>
+	</tr>
+	<tr>
+		<% @categories.each do |category| %>
+			<td> <%= link_to category.name, category %> </td>
+			<td> <%= category.code %> </td>
+	</tr>
+		<% end %>
+</table>

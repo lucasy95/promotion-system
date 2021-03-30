@@ -65,7 +65,7 @@ class PromotionsTest < ApplicationSystemTestCase
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-    click_on 'Voltar'
+    click_on 'Início'
 
     assert_current_path root_path
   end
@@ -86,7 +86,6 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create promotion' do
-
     usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
 
     login_as usuario, scope: :user

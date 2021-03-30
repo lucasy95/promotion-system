@@ -1,0 +1,7 @@
+<p><%= @category.name %></p>
+
+<p><%= @category.code %></p>
+
+<%= link_to 'Editar Categoria', edit_category_path(@category) %>
+
+<%= link_to "Deletar", category_path(@category), method: :delete %>

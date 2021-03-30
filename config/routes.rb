@@ -10,4 +10,6 @@ Rails.application.routes.draw do
 		post 'disable', on: :member    #especificar cupom/ ñ pode ser get
 	end
 
+  resources :categories, only: [:new,:show, :index, :create, :edit, :update, :destroy]
+
 end
