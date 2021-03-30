@@ -48,8 +48,10 @@
 			<td>
 				    <%= "#{coupon.code}" %>
 						<% if coupon.active?%>
-				    <%= link_to 'Desabilitar', disable_coupon_path(coupon), method: :post %> <!-- precisa especificar o caminho do path-->
-				    <% end %>
+				    	<%= link_to 'Desabilitar', disable_coupon_path(coupon), method: :post %> <!-- precisa especificar o caminho do path-->
+						<% else %>
+							<%= link_to 'Habilitar', enable_coupon_path(coupon), method: :post %>
+						<% end %>
 			</td>
 			<td> <%= "(#{Coupon.human_attribute_name("status.#{coupon.status}")})" %> </td>
 		<% end %>

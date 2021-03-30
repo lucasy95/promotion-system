@@ -13,3 +13,5 @@ pt-BR:
   coupons:
     disable:
       success: Cupom %{code} desabilitado com sucesso!
+    enable:
+      success: Cupom %{code} habilitado com sucesso!

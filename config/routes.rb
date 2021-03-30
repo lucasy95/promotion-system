@@ -8,7 +8,8 @@ Rails.application.routes.draw do
 
 	resources :coupons, only: [] do
 		post 'disable', on: :member    #especificar cupom/ ñ pode ser get
-	end
+    post 'enable', on: :member
+  end
 
   resources :categories, only: [:new,:show, :index, :create, :edit, :update, :destroy]
 
