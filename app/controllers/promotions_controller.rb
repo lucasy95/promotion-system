@@ -1,18 +1,19 @@
 class PromotionsController < ApplicationController
-  before_action :authenticate_user!, only: %i[ index show new create generate_coupons ]
+  before_action :authenticate_user!, only: %i[ index show new create generate_coupons search]
   before_action :set_promotion, only: [:show, :generate_coupons, :edit, :update, :destroy]  #filters
 
 	def index
 		@promotions = Promotion.all
+
 	end
 
-	def show  #before_action
+	def show
 	end
 
-	def edit  #before_action
+	def edit
 	end
 
-	def update   #before_action
+	def update
     if @promotion.update(promotion_params)
       redirect_to @promotion
     else
@@ -45,6 +46,12 @@ class PromotionsController < ApplicationController
 		@promotion.generate_coupons!
 		redirect_to @promotion, notice: t('.success')
 	end
+
+  def search
+    @promotions = Promotion.search(params[:buscar])
+    render :index
+  end
+
 
 	private
 

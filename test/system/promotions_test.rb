@@ -53,7 +53,7 @@ class PromotionsTest < ApplicationSystemTestCase
     visit root_path
     click_on 'Promoções'
 
-    assert_text 'Nenhuma promoção cadastrada'
+    assert_text 'Nenhuma promoção encontrada'
   end
 
   test 'view promotions and return to home page' do
@@ -199,6 +199,64 @@ class PromotionsTest < ApplicationSystemTestCase
 
   test 'create promotion without login -> sign in' do
     visit new_promotion_path
+    assert_current_path new_user_session_path
+  end
+
+  test 'search promotions by term and finds results' do
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
+                                      expiration_date: '25/12/2021')
+    pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
+                                       code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
+                                       expiration_date: '04/04/2033')
+    natal22 = Promotion.create!(name: 'Natal 2022', description: 'Promoção de Natal 22',
+                                       code: 'NATAL22', discount_rate: 15, coupon_quantity: 100,
+                                       expiration_date: '25/12/2022')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+
+    login_as usuario, scope: :user
+    visit root_path
+    click_on 'Promoções'
+    fill_in 'Busca', with: 'Natal'
+    click_on 'Buscar'
+
+    assert_text natal.name
+    assert_text natal22.name
+    refute_text pascoav.name
+  end
+
+  test 'search promotions by term and finds nothing' do
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
+                                      expiration_date: '25/12/2021')
+    pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
+                                       code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
+                                       expiration_date: '04/04/2033')
+    natal22 = Promotion.create!(name: 'Natal 2022', description: 'Promoção de Natal 22',
+                                       code: 'NATAL22', discount_rate: 15, coupon_quantity: 100,
+                                       expiration_date: '25/12/2022')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+
+    login_as usuario, scope: :user
+    visit root_path
+    click_on 'Promoções'
+    fill_in 'Busca', with: 'Dia das crianças'
+    click_on 'Buscar'
+
+    assert_text 'Nenhuma promoção encontrada'
+    refute_text natal.name
+    refute_text natal22.name
+    refute_text pascoav.name
+  end
+
+  test 'search promotions without login' do
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
+                                      expiration_date: '25/12/2021')
+
+    visit search_promotions_path(buscar: 'natal')
+
+    assert_text 'Para continuar, efetue login ou registre-se'
     assert_current_path new_user_session_path
   end
 

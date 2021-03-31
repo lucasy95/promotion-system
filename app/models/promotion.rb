@@ -13,9 +13,13 @@ class Promotion < ApplicationRecord
       end
   end
 
-
-
   def coupons?
     coupons.any?
   end
+
+  def self.search(query) #self. pois busca em todas as promoções
+    where('name LIKE :query OR code LIKE :query OR description LIKE :query', query: "%#{query}%") #LIKE busca por algo parecido antes% depois%
+  end
 end
+
+# gem kaminari
