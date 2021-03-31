@@ -5,8 +5,8 @@
   <nav>
     <ul>
     <li><%= link_to 'Início', root_path %></li>
-    <li><%= link_to 'Categorias', categories_path %>
     <% if user_signed_in? %>
+      <li><%= link_to 'Categorias', categories_path %> </li>
       <li><%= link_to 'Promoções', promotions_path %></li>
       <li><%= link_to 'Sair', destroy_user_session_path, method: :delete %></li>
       <li><%= current_user.email %></li>

@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+  before_action :authenticate_user!, only: %i[ index show edit new create destroy update ]
 
     def index
   		@categories = Category.all
