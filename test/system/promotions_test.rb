@@ -249,7 +249,7 @@ class PromotionsTest < ApplicationSystemTestCase
     refute_text pascoav.name
   end
 
-  test 'search promotions without login' do
+  test 'search promotions using route without login' do
     natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
                                       code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
                                       expiration_date: '25/12/2021')
@@ -259,5 +259,7 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text 'Para continuar, efetue login ou registre-se'
     assert_current_path new_user_session_path
   end
+
+
 
 end

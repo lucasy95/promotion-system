@@ -33,6 +33,22 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_session_path
   end
 
-  # TODO: teste editar sem login
-  # TODO: teste deletar sem login 
+  test 'cant delete a promotion without login' do
+    promocao = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
+      discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021')
+
+    delete promotion_path(promocao)
+
+    assert_redirected_to new_user_session_path
+  end
+
+  test 'cant edit a promotion without login' do
+    promocao = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
+      discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021')
+
+    patch promotion_path(Promotion.last), params: { promotion: { name: "Pascoa" } }
+
+    assert_redirected_to new_user_session_path
+  end
+
 end
