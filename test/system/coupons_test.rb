@@ -3,11 +3,11 @@ require 'application_system_test_case'
 class CouponsTest < ApplicationSystemTestCase
 
   test 'disable a coupon' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
     promotion = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 1,
                           description: 'Promoção de Cyber Monday',
                           code: 'CYBER15', discount_rate: 15,
-                          expiration_date: '22/12/2033')
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+                          expiration_date: '22/12/2033', user: usuario)
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
     #promotion.generate_coupons!
 
@@ -22,11 +22,11 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'enable a coupon' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
     promotion = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 1,
                           description: 'Promoção de Cyber Monday',
                           code: 'CYBER15', discount_rate: 15,
-                          expiration_date: '22/12/2033')
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+                          expiration_date: '22/12/2033', user: usuario)
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
     login_as usuario, scope: :user
