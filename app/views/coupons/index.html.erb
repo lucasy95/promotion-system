@@ -1,0 +1,23 @@
+<span class = "fontepadrao">
+ <p> RESULTADO DA BUSCA POR: <span class="blue"> <%= params[:buscarcupom] %> </span> </p>
+</span>
+
+<% if @coupons.empty? %>
+  <h3> Nenhum cupom encontrado. </h3>
+<% end %>
+
+<table>
+<tr>
+  <th class = "h"> Cupom: </th>
+  <th class = "h"> Promoção: </th>
+  <th class = "h"> Situação: </th>
+</tr>
+<tr>
+  <% @coupons.each do |coupon| %>
+    <td> <%= coupon.code %> </td>
+    <td> <%= coupon.promotion.name %> </td>
+    <td> <%= Coupon.human_attribute_name(coupon.status) %> </td>
+</tr>
+  <% end %>
+</table>
+ <!--Model.human_attribute_name(attribute) -->

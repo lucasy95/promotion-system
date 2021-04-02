@@ -221,8 +221,10 @@ class PromotionsTest < ApplicationSystemTestCase
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-    fill_in 'Busca', with: 'Natal'
-    click_on 'Buscar'
+    within ".bpromocao" do
+      fill_in 'Buscar promoção', with: 'Natal'
+      click_on 'Buscar'
+    end
 
     assert_text natal.name
     assert_text natal22.name
@@ -244,8 +246,10 @@ class PromotionsTest < ApplicationSystemTestCase
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-    fill_in 'Busca', with: 'Dia das crianças'
-    click_on 'Buscar'
+    within ".bpromocao" do
+      fill_in 'Buscar promoção', with: 'Dia das crianças'
+      click_on 'Buscar'
+    end
 
     assert_text 'Nenhuma promoção encontrada'
     refute_text natal.name

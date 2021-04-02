@@ -1,12 +1,22 @@
-  <div style="padding:10px" >
+<div style="padding:10px" >
   <%= link_to 'Registrar uma promoção', new_promotion_path %>
-  </div>
+</div>
 
+<div class = "bpromocao">
   <%= form_with url: search_promotions_path, method: :get do |form| %>
-  <%= form.label :buscar, 'Busca' %>
+  <%= form.label :buscar, 'Buscar promoção:' %>
   <%= form.text_field :buscar %>
   <%= form.submit 'Buscar'%>
   <% end %>
+</div>
+
+<div class = "bcupom">
+  <%= form_with url: search_coupons_path, method: :get do |form| %>
+  <%= form.label :buscarcupom, 'Buscar cupom:' %>
+  <%= form.text_field :buscarcupom %>
+  <%= form.submit "Buscar" %>
+  <% end %>
+</div>
 
 
 	<% if @promotions.empty? %>

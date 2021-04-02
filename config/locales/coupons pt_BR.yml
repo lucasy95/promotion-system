@@ -6,6 +6,8 @@ pt-BR:
     attributes:
       coupon:
         code: Código
+        active: ATIVO
+        disabled: DESABILITADO
       coupon/status:
         active: ATIVO
         disabled: DESABILITADO

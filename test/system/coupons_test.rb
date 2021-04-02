@@ -43,4 +43,55 @@ class CouponsTest < ApplicationSystemTestCase
     assert_text "(ATIVO)"
     assert_no_link 'Habilitar'
   end
+
+  test 'search a coupon and finds unique coupon' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 10,
+                                      expiration_date: '25/12/2021', user: usuario)
+    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: natal)
+    coupon1 = Coupon.create!(code: 'NATAL21-0001', promotion: natal)
+
+    login_as usuario, scope: :user
+    visit root_path
+    click_on 'Promoções'
+    within '.bcupom' do
+      fill_in 'Buscar cupom:', with: 'NATAL21-0005'
+      click_on 'Buscar'
+    end
+    assert_text 'NATAL21-0005'
+    refute_text 'NATAL21-0001'
+    assert_text 'ATIVO'
+  end
+
+  test 'search a coupon and finds nothing' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 10,
+                                      expiration_date: '25/12/2021', user: usuario)
+    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: natal)
+
+    login_as usuario, scope: :user
+    visit root_path
+    click_on 'Promoções'
+    within '.bcupom' do
+      fill_in 'Buscar cupom:', with: 'NATAL21-0003'
+      click_on 'Buscar'
+    end
+    assert_text 'Nenhum cupom encontrado.'
+    refute_text 'NATAL21-0005'
+  end
+
+  test 'search coupon using route without login' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
+                                      expiration_date: '25/12/2021', user: usuario)
+    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: natal)
+
+    visit search_coupons_path(buscar: 'NATAL21-0005')
+
+    assert_text 'Para continuar, efetue login ou registre-se'
+    assert_current_path new_user_session_path
+  end
 end
