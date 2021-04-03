@@ -23,7 +23,9 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: usuario.email
     fill_in 'Senha', with: usuario.password
-    click_on 'Log in'
+    within ".actions" do
+      click_on 'Entrar'
+    end
 
     assert_text 'Login efetuado com sucesso!'
     assert_text usuario.email
@@ -112,8 +114,46 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: 'test@iugu.com.br'
     fill_in 'Senha', with: '123456'
-    click_on 'Log in'
+    within ".actions" do
+      click_on 'Entrar'
+    end
 
+    assert_text 'Email ou senha inválida'
+  end
+
+  test 'change password' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+
+    visit root_path
+    click_on 'Entrar'
+    fill_in 'Email', with: 'testando@iugu.com.br'
+    fill_in 'Senha', with: 'senha123'
+    within ".actions" do
+      click_on 'Entrar'
+    end
+    click_on 'Trocar senha'
+    fill_in 'Nova senha', with: 'senha678'
+    fill_in 'Confirmação de senha', with: 'senha678'
+    fill_in 'Senha atual', with: usuario.password
+    within ".actions" do
+      click_on 'Trocar senha'
+    end
+    assert_text 'Sua senha foi trocada com sucesso'
+    assert_current_path root_path
+  end
+
+  test 'change password error' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+
+    usuario.change_pass(123456)
+
+    visit root_path
+    click_on 'Entrar'
+    fill_in 'Email', with: 'testando@iugu.com.br'
+    fill_in 'Senha', with: 'senha123'
+    within ".actions" do
+      click_on 'Entrar'
+    end
     assert_text 'Email ou senha inválida'
   end
 
