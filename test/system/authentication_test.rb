@@ -105,6 +105,17 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_text 'Confirmação de senha não é igual a Senha'
   end
 
-  # TODO: erro ao logar
-  # TOOD: Usuario.name
+  test 'wrong password' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+
+    visit root_path
+    click_on 'Entrar'
+    fill_in 'Email', with: 'test@iugu.com.br'
+    fill_in 'Senha', with: '123456'
+    click_on 'Log in'
+
+    assert_text 'Email ou senha inválida'
+  end
+
+  # TODO: Usuario.name
 end
