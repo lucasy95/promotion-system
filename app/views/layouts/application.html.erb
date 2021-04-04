@@ -8,9 +8,9 @@
     <% if user_signed_in? %>
       <li><%= link_to 'Categorias', categories_path %> </li>
       <li><%= link_to 'Promoções', promotions_path %></li>
+      <li><%= link_to 'Minha conta', perfil_index_path %></li>
       <li><%= link_to 'Sair', destroy_user_session_path, method: :delete %></li>
-      <li><%= current_user.email %></li>
-      <li><%= link_to "Trocar senha", edit_user_registration_path %></li>
+      <li> Olá, <%= current_user.name.upcase %>!</li>
     <% else %>
       <li><%= link_to 'Cadastrar', new_user_registration_path %></li>
       <li><%= link_to 'Entrar', new_user_session_path %></li>

@@ -3,7 +3,7 @@ require 'test_helper'
 class PromotionFlowTest < ActionDispatch::IntegrationTest
 
   test 'can create a promotion' do   #testar um controller
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
     login_as usuario, scope: :user
 
     post "/promotions", params: {promotion: {name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
@@ -24,7 +24,7 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cant generate coupons without login' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
                                   discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021',
                                   user: usuario)
@@ -36,9 +36,10 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cant delete a promotion without login' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     promocao = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
-      discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021', user: usuario)
+                                 discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021',
+                                 user: usuario)
 
     delete promotion_path(promocao)
 
@@ -46,7 +47,7 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cant edit a promotion without login' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     promocao = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
                                  discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021',
                                  user: usuario)
@@ -57,7 +58,7 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cant approve if Im owner' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     promocao = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
                                 discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021',
                                 user: usuario)

@@ -16,7 +16,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'code must be uniq' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: usuario)
@@ -28,7 +28,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'name must be uniq' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: usuario)
@@ -40,7 +40,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'generate_coupons! successfully' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: usuario)
@@ -50,7 +50,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'generate_coupons! cannot be called twice' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: usuario)
@@ -61,7 +61,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test '.search exact promotion' do  #(.) método de classe convenção
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     natalv = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                expiration_date: '22/12/2033', user: usuario)
@@ -76,7 +76,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test '.search by partial' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
                                       code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
                                       expiration_date: '25/12/2021', user: usuario)
@@ -95,7 +95,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test '.search finds nothing' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
     natalv = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                expiration_date: '22/12/2033', user: usuario)

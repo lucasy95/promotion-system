@@ -4,7 +4,7 @@ class CategoriesTest < ApplicationSystemTestCase
   test 'view categories' do
     Category.create!(name: 'Produto Testando', code: 'TESTE')
     Category.create!(name: 'Produto Testando Dois', code: 'TESTE2')
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'test123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'test123', name: 'Teste')
 
     login_as usuario, scope: :user
     visit root_path
@@ -18,7 +18,7 @@ class CategoriesTest < ApplicationSystemTestCase
   end
 
   test 'create a new category' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'test123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'test123', name: 'Teste')
 
     login_as usuario, scope: :user
     visit root_path
@@ -35,7 +35,7 @@ class CategoriesTest < ApplicationSystemTestCase
 
   test 'edit category' do
     category = Category.create!(name: 'Produto Teste', code: 'TESTE')
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
 
     login_as usuario, scope: :user
     visit category_path(category)
@@ -49,7 +49,7 @@ class CategoriesTest < ApplicationSystemTestCase
 
   test 'delete category' do
     category = Category.create!(name: 'Produto Teste', code: 'TESTE')
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
 
     login_as usuario, scope: :user
     visit category_path(category)

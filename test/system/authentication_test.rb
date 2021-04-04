@@ -4,20 +4,21 @@ class AuthenticationTest < ApplicationSystemTestCase
   test 'sign up' do
     visit root_path
     click_on 'Cadastrar'
+    fill_in 'Nome', with: 'Teste'
     fill_in 'Email', with: 'testando@iugu.com.br'
     fill_in 'Senha', with: 'test123'
     fill_in 'Confirmação de senha', with: 'test123'
     click_on 'Finalizar Cadastro'
 
     assert_text 'Usuário cadastrado com sucesso'
-    assert_text 'testando@iugu.com.br'
+    assert_text User.last.name.upcase
     assert_link 'Sair'
     assert_no_link 'Cadastrar'
     assert_current_path root_path
   end
 
   test 'sign in' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
 
     visit root_path
     click_on 'Entrar'
@@ -28,7 +29,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     end
 
     assert_text 'Login efetuado com sucesso!'
-    assert_text usuario.email
+    assert_text usuario.name.upcase
     assert_current_path root_path
     assert_link 'Sair'
     assert_no_link 'Entrar'
@@ -36,7 +37,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'logout' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
 
     login_as usuario, scope: :user
 
@@ -84,7 +85,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'email already in use' do
-    usuario = User.create!(email: 'usuario01@iugu.com.br', password: 'pass123')
+    usuario = User.create!(email: 'usuario01@iugu.com.br', password: 'pass123', name: 'Teste')
 
     visit root_path
     click_on 'Cadastrar'
@@ -108,7 +109,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'wrong password' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
 
     visit root_path
     click_on 'Entrar'
@@ -122,7 +123,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'change password' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
 
     visit root_path
     click_on 'Entrar'
@@ -131,6 +132,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     within ".actions" do
       click_on 'Entrar'
     end
+    visit perfil_index_path
     click_on 'Trocar senha'
     fill_in 'Nova senha', with: 'senha678'
     fill_in 'Confirmação de senha', with: 'senha678'
@@ -143,7 +145,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'change password error' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123')
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
 
     usuario.change_pass(123456)
 
@@ -157,5 +159,4 @@ class AuthenticationTest < ApplicationSystemTestCase
     assert_text 'Email ou senha inválida'
   end
 
-  # TODO: Usuario.name
 end

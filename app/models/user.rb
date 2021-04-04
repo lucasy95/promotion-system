@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :promotion_approvals
   has_many :approved_promotions, through: :promotion_approvals, source: :promotion
 
+  validates :name, presence: true
+
 
   def change_pass(new_pass)
     self.password = new_pass

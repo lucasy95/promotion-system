@@ -12,7 +12,7 @@ class Promotion < ApplicationRecord
   def generate_coupons!
     return if coupons?
       (1..coupon_quantity).each do |number|  #omite o self.
-         coupons.create!(code: "#{code}-#{'%04d' % number}")  #.create vem do has_many e ñ um metodo de array
+         coupons.create!(code: "#{code}-#{'%04d' % number}")
          #Coupon.create!(code: "#{code}-#{'%04d' % number}", promotion: self)
       end
   end
@@ -21,8 +21,8 @@ class Promotion < ApplicationRecord
     coupons.any?
   end
 
-  def self.search(query) #self. pois busca em todas as promoções
-    where('name LIKE :query OR code LIKE :query OR description LIKE :query', query: "%#{query}%") #LIKE busca por algo parecido antes% depois%
+  def self.search(query)
+    where('name LIKE :query OR code LIKE :query OR description LIKE :query', query: "%#{query}%")
   end
 
   def approved?
