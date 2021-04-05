@@ -12,11 +12,17 @@ Rails.application.routes.draw do
   end
 
 	resources :coupons, only: [] do
-		post 'disable', on: :member    #especificar cupom/ ñ pode ser get
+		post 'disable', on: :member
     post 'enable', on: :member
     get 'search', on: :collection
   end
 
   resources :categories, only: [:new,:show, :index, :create, :edit, :update, :destroy]
+
+  namespace :api do
+    namespace :v1 do
+      resources :coupons, only: [ :show, :index ], param: :code
+    end
+  end
 
 end
