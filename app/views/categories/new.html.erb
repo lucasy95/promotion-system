@@ -1,17 +1,14 @@
-<h3> Nova Categoria </h3>
-
+<p class="fontepadrao"> NOVA CATEGORIA </p>
 
 <%= form_with model: @category do |form| %>
-  <div>
 
+  <div>
     <%= form.label :name %> <br>
     <%= form.text_field :name %>
     <% @category.errors.full_messages_for(:name).each do |message| %>
-     <%= message %>
+      <div> <%= message %> </div>
     <% end %>
   </div>
-
-  <p></p>
 
   <div>
     <%= form.label :code %> <br>
@@ -24,4 +21,5 @@
   <div>
     <%= form.submit %>
   </div>
+  
 <% end %>

@@ -36,11 +36,25 @@
   <ul>
     <li><%= f.label :expiration_date %> <br></li>
     <li><%= f.text_field :expiration_date %></li>
-
   </ul>
 
   <ul>
     <li> <%= f.submit %> </li>
   </ul>
-
 <% end %>
+
+<div id = "applypromotion">
+<span class="fontepadrao"> APLICAR PROMOÇÃO PARA CATEGORIAS </span>
+    <%= form_with model: @promotion do |form| %>
+      <%= form.collection_check_boxes(:category_ids, Category.all ,
+                                      :id, :category_filter) do |b|%><br>
+        <% if b.object.promotions.empty?%>
+          <%= b.check_box %>
+          <%= b.label %>
+        <% end %>
+      <% end %><br>
+    <%= form.submit 'Aplicar promoção'%>
+    <% end %>
+</div>
+
+<%# @category.map {|x| x.promotions.empty?}%>

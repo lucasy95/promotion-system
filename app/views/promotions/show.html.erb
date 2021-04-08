@@ -26,10 +26,15 @@
 				<td><%= @promotion.coupon_quantity %></td>
 			</tr>
 			<tr>
+				<th> Promoções aplicadas em: </th>
+				<td><%= @promotion.categories.map {|x| x.name}.join(", ") %></td>
+			</tr>
+			<tr>
 				<th> Ação </th>
 				<td>
 					<%= link_to 'Editar', edit_promotion_path(@promotion) %>
 					<%= link_to "Deletar", promotion_path(@promotion), method: :delete %>
+					<%= link_to 'Aplicar promoção', edit_promotion_path(@promotion, anchor: 'applypromotion')%>
 				</td>
 			</tr>
 	</table>

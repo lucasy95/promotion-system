@@ -6,11 +6,19 @@
 	<tr>
 		<th class = "h"> Nome: </th>
 	  <th class = "h"> Código: </th>
+		<th class = "h"> Promoção: </th>
 	</tr>
 	<tr>
 		<% @categories.each do |category| %>
 			<td> <%= link_to category.name, category %> </td>
 			<td> <%= category.code %> </td>
+			<td>
+					<% unless category.promotions.first == nil %>
+						<%= category.promotions.first.name %>
+					<% else %>
+						Nenhuma promoção ativa.
+					<% end %>
+			</td>
 	</tr>
 		<% end %>
 </table>

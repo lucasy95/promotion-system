@@ -2,12 +2,15 @@ class Promotion < ApplicationRecord
   belongs_to :user
 
   has_many :coupons
+
+  has_many :uses
+  has_many :categories, through: :uses
+
   has_one :promotion_approval  #só tem um aprovar
   has_one :approver, through: :promotion_approval, source: :user
 
   validates :name, :code, :discount_rate, :coupon_quantity, :expiration_date, presence: true
   validates :code, :name, uniqueness: true
-
 
   def generate_coupons!
     return if coupons?
@@ -32,5 +35,6 @@ class Promotion < ApplicationRecord
   def can_approve?(current_user)
     user != current_user
   end
+
 end
 # gem kaminari

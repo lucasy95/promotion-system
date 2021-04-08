@@ -8,18 +8,21 @@ class PromotionsController < ApplicationController
 	end
 
 	def show
+    @category = Category.all
 	end
 
 	def edit
     @user = current_user
+    #@category = Category.all.each {|x| x.id}
+    @promotions = Promotion.all
 	end
 
 	def update
-    if @promotion.update(promotion_params)
-      redirect_to @promotion
-    else
-      render :edit
-    end
+      if @promotion.update(promotion_params)
+        redirect_to @promotion
+      else
+        render :edit
+      end
   end
 
 	def new
@@ -59,7 +62,7 @@ class PromotionsController < ApplicationController
     redirect_to @promotion, notice: 'Promoção aprovada com sucesso'
   end
 
-	private
+  private
 
 	  def set_promotion
 			@promotion = Promotion.find(params[:id])
@@ -69,7 +72,8 @@ class PromotionsController < ApplicationController
 		def promotion_params
 			params
 				.require(:promotion)
-				.permit(:name, :expiration_date, :description, :discount_rate, :code, :coupon_quantity)
+				.permit(:name, :expiration_date, :description, :discount_rate, :code,
+        :coupon_quantity, :category_ids => [])
 		end
 
     def can_be_approved
