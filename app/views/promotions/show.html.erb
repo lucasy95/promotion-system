@@ -27,7 +27,11 @@
 			</tr>
 			<tr>
 				<th> Promoções aplicadas em: </th>
-				<td><%= @promotion.categories.map {|x| x.name}.join(", ") %></td>
+				<td> <% unless @promotion.categories.first == nil %>
+						<%= @promotion.categories.map {|x| x.name}.join(", ") %>
+						<% else %>
+						Nenhuma promoção aplicada.
+						<% end %></td>
 			</tr>
 			<tr>
 				<th> Ação </th>

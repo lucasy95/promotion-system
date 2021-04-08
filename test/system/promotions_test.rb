@@ -146,7 +146,7 @@ class PromotionsTest < ApplicationSystemTestCase
                       code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                       expiration_date: '22/12/2033', user: usuario)
 
-    promotion.create_promotion_approval(user: User.create!(email: 'usuario2@iugu.com.br', 
+    promotion.create_promotion_approval(user: User.create!(email: 'usuario2@iugu.com.br',
                                                            password: 'senha123', name: 'Teste2'))
     login_as usuario, scope: :user
     visit promotion_path(promotion)
@@ -273,7 +273,6 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'user approves promotion' do
     usuario = User.create!(email: 'outrousuario@iugu.com.br', password: 'pass789', name: 'Teste')
     usuario2 = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste2')
-
     natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
                               code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
                               expiration_date: '25/12/2021', user: usuario)
@@ -287,6 +286,57 @@ class PromotionsTest < ApplicationSystemTestCase
     assert_text "Aprovada por: #{approver.email}"
     assert_link 'Gerar cupons'
     refute_link 'Aprovar'
+  end
+
+  test 'apply promotion to category' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'passpass', name: 'Testador')
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                              code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
+                              expiration_date: '25/12/2021', user: usuario)
+    categoria = Category.create!(name: 'Produto Testando', code: 'TESTE')
+
+    login_as usuario, scope: :user
+    visit promotion_path(natal)
+    click_on 'Aplicar promoção'
+    check(categoria.name)
+    click_on 'Aplicar promoção'
+    assert_text categoria.name
+    click_on 'Categorias'
+    assert_text natal.name
+  end
+
+  test 'remove category promotion' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'passpass', name: 'Testador')
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                              code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
+                              expiration_date: '25/12/2021', user: usuario)
+    categoria = Category.create!(name: 'Legumes', code: 'LEGU')
+    Use.create!(promotion_id: natal.id, category_id: categoria.id)
+
+    login_as usuario, scope: :user
+    visit promotion_path(natal)
+    assert_text categoria.name
+    click_on 'Aplicar promoção'
+    click_on 'Aplicar promoção'
+    assert_no_text categoria.name
+    assert_text 'Nenhuma promoção aplicada'
+  end
+
+  test 'apply promotion to categories' do
+    usuario = User.create!(email: 'testando@iugu.com.br', password: 'passpass', name: 'Testador')
+    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
+                              code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
+                              expiration_date: '25/12/2021', user: usuario)
+    categoria1 = Category.create!(name: 'Cimento', code: 'CPIV')
+    categoria2 = Category.create!(name: 'Brita', code: 'BRIT')
+
+    login_as usuario, scope: :user
+    visit promotion_path(natal)
+    click_on 'Aplicar promoção'
+    check(categoria1.name)
+    check(categoria2.name)
+    click_on 'Aplicar promoção'
+    assert_text 'Cimento, Brita'
   end
 
 end
