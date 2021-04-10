@@ -2,10 +2,8 @@ require 'test_helper'
 
 class PromotionApiTest < ActionDispatch::IntegrationTest
   test 'show coupon' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
-                                  discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021',
-                                  user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
     coupon = Coupon.create!(code: 'NATAL21-0001', promotion: promotion)
 
     get "/api/v1/coupons/#{coupon.code}"
@@ -15,10 +13,8 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'check if the coupon is active' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
-                                  discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021',
-                                  user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
     coupon = Coupon.create!(code: 'NATAL21-0001', promotion: promotion)
 
     get "/api/v1/coupons/#{coupon.code}"
@@ -29,10 +25,8 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'check coupons index' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
-                                  discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021',
-                                  user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
     coupons = Coupon.all
 
     get "/api/v1/coupons"
@@ -43,10 +37,8 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'check discount rate' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal', code: 'NATAL21',
-                                  discount_rate: 50, coupon_quantity: 10, expiration_date: '26/12/2021',
-                                  user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
     coupon = Coupon.create!(code: 'NATAL21-0001', promotion: promotion)
 
     get "/api/v1/coupons/#{coupon.code}", as: :json

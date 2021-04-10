@@ -3,52 +3,41 @@ require 'application_system_test_case'
 class PromotionsTest < ApplicationSystemTestCase
 
   test 'view promotions' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'testando', name: 'Teste')
-    Promotion.create!( name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario )
-    Promotion.create!( name: 'Cyber Monday', coupon_quantity: 100,
-                      description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033', user: usuario )
+    usuario = Fabricate(:user)
+    promotion1 = Fabricate(:promotion)
+    promotion2 = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-
-    assert_text 'Natal'
-    assert_text 'Promoção de Natal'
-    assert_text '10,00%'
-    assert_text 'Cyber Monday'
-    assert_text 'Promoção de Cyber Monday'
-    assert_text '15,00%'
+    #.strftime('%d/%m/%Y')
+    assert_text promotion1.name
+    assert_text promotion1.description
+    assert_text '25,00%'
+    assert_text promotion2.name
+    assert_text promotion2.description
+    assert_text '25,00%'
   end
 
   test 'view promotion details' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
-    Promotion.create!(name: 'Cyber Monday', coupon_quantity: 90,
-                      description: 'Promoção de Cyber Monday',
-                      code: 'CYBER15', discount_rate: 15,
-                      expiration_date: '22/12/2033', user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-    click_on 'Cyber Monday'
+    click_on promotion.name
 
-    assert_text 'Cyber Monday'
-    assert_text 'Promoção de Cyber Monday'
-    assert_text '15,00%'
-    assert_text 'CYBER15'
-    assert_text '22/12/2033'
-    assert_text '90'
+    assert_text promotion.name
+    assert_text promotion.description
+    assert_text '25,00%'
+    assert_text promotion.code
+    assert_text promotion.expiration_date.strftime('%d/%m/%Y')
+    assert_text promotion.coupon_quantity
   end
 
   test 'no promotion are available' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     login_as usuario, scope: :user
     visit root_path
@@ -58,36 +47,34 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotions and return to home page' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
+    assert_text promo.name
     click_on 'Início'
 
     assert_current_path root_path
   end
 
   test 'view details and return to promotions page' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-    click_on 'Natal'
+    click_on promo.name
+    assert_text promo.coupon_quantity
     click_on 'Voltar'
 
     assert_current_path promotions_path
   end
 
   test 'create promotion' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     login_as usuario, scope: :user
     visit root_path
@@ -112,7 +99,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create and attributes cannot be blank' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     login_as usuario, scope: :user
     visit root_path
@@ -124,49 +111,40 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'create and code/name must be unique' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
     click_on 'Registrar uma promoção'
-    fill_in 'Código', with: 'NATAL10'
-    fill_in 'Nome', with: 'Natal'
+    fill_in 'Código', with: promo.code
+    fill_in 'Nome', with: promo.name
     click_on 'Criar Promoção'
 
     assert_text 'já está em uso', count: 2
   end
 
   test 'generate coupons for a promotion' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
 
-    promotion.create_promotion_approval(user: User.create!(email: 'usuario2@iugu.com.br',
-                                                           password: 'senha123', name: 'Teste2'))
+    promotion.create_promotion_approval(user: Fabricate(:user))
     login_as usuario, scope: :user
     visit promotion_path(promotion)
     click_on 'Gerar cupons'
 
     assert_text 'Cupons gerados com sucesso'
     assert_no_link 'Gerar cupons'
-    assert_text 'NATAL10-0001'
-    assert_text 'NATAL10-0050'
-    assert_text 'NATAL10-0100'
-    assert_no_text 'NATAL10-0000'
-    assert_no_text 'NATAL10-0101'
-
+    assert_text "#{promotion.code}-0001"
+    assert_text "#{promotion.code}-0010"
+    assert_no_text "#{promotion.code}-0011"
+    assert_no_text "#{promotion.code}-0000"
   end
 
   test 'edit promotion' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Dia das maes', description: 'Promoção de Dia das Mães',
-                      code: 'DM2021', discount_rate: 50, coupon_quantity: 30,
-                      expiration_date: '01/12/2021', user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit promotion_path(promotion)
@@ -175,7 +153,7 @@ class PromotionsTest < ApplicationSystemTestCase
     fill_in 'Nome', with: 'Dia dos pais'
     click_on 'Atualizar Promoção'
     assert_text 'Dia dos pais'
-    assert_no_text 'Dia das maes'
+    assert_no_text promotion.name
   end
 
   test 'dont view promotion link without login' do
@@ -191,11 +169,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotion details without login' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-
-    promotion = Promotion.create!(name: 'Dia das maes', description: 'Promoção de Dia das Mães',
-                          code: 'DM2021', discount_rate: 50, coupon_quantity: 30,
-                          expiration_date: '01/12/2021', user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
 
     visit promotion_path(promotion)
 
@@ -208,41 +183,31 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'search promotions by term and finds results' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                                      expiration_date: '25/12/2021', user: usuario)
-    pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
-                                       code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
-                                       expiration_date: '04/04/2033', user: usuario)
-    natal22 = Promotion.create!(name: 'Natal 2022', description: 'Promoção de Natal 22',
-                                       code: 'NATAL22', discount_rate: 15, coupon_quantity: 100,
-                                       expiration_date: '25/12/2022', user: usuario)
+    usuario = Fabricate(:user)
+    pascoav = Promotion.create!
+                        (name: 'Páscoa', description: 'Promoção de Páscoa',
+                         code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
+                         expiration_date: '04/04/2033', user: usuario)
+    promo1 = Fabricate(:promotion)
+    promo2 = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
     within ".bpromocao" do
-      fill_in 'Buscar promoção', with: 'Natal'
+      fill_in 'Buscar promoção', with: 'Verão'
       click_on 'Buscar'
     end
-
-    assert_text natal.name
-    assert_text natal22.name
+    assert_text promo1.name
+    assert_text promo2.name
     refute_text pascoav.name
   end
 
   test 'search promotions by term and finds nothing' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                                      expiration_date: '25/12/2021', user: usuario)
-    pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
-                                       code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
-                                       expiration_date: '04/04/2033', user: usuario)
-    natal22 = Promotion.create!(name: 'Natal 2022', description: 'Promoção de Natal 22',
-                                       code: 'NATAL22', discount_rate: 15, coupon_quantity: 100,
-                                       expiration_date: '25/12/2022', user: usuario)
+    usuario = Fabricate(:user)
+    promo1 = Fabricate(:promotion)
+    promo2 = Fabricate(:promotion)
+    promo3 = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit root_path
@@ -251,36 +216,31 @@ class PromotionsTest < ApplicationSystemTestCase
       fill_in 'Buscar promoção', with: 'Dia das crianças'
       click_on 'Buscar'
     end
-
     assert_text 'Nenhuma promoção encontrada'
-    refute_text natal.name
-    refute_text natal22.name
-    refute_text pascoav.name
+    refute_text promo1.name
+    refute_text promo2.name
+    refute_text promo3.name
   end
 
   test 'search promotions using route without login' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                                      expiration_date: '25/12/2021', user: usuario)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
 
-    visit search_promotions_path(buscar: 'natal')
+    visit search_promotions_path(buscar: 'promo')
 
     assert_text 'Para continuar, efetue login ou registre-se'
     assert_current_path new_user_session_path
   end
 
   test 'user approves promotion' do
-    usuario = User.create!(email: 'outrousuario@iugu.com.br', password: 'pass789', name: 'Teste')
-    usuario2 = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste2')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                              code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                              expiration_date: '25/12/2021', user: usuario)
+    usuario1 = Fabricate(:user)
+    usuario2 = Fabricate(:user)
+    promo = Fabricate(:promotion)
 
     login_as usuario2, scope: :user
     approver = usuario2
-    visit promotion_path(natal)
-    accept_confirm { click_on 'Aprovar' } # {} = do / end
+    visit promotion_path(promo)
+    accept_confirm { click_on 'Aprovar' }
 
     assert_text 'Promoção aprovada com sucesso'
     assert_text "Aprovada por: #{approver.email}"
@@ -289,32 +249,28 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'apply promotion to category' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'passpass', name: 'Testador')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                              code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                              expiration_date: '25/12/2021', user: usuario)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
     categoria = Category.create!(name: 'Produto Testando', code: 'TESTE')
 
     login_as usuario, scope: :user
-    visit promotion_path(natal)
+    visit promotion_path(promo)
     click_on 'Aplicar promoção'
     check(categoria.name)
     click_on 'Aplicar promoção'
     assert_text categoria.name
     click_on 'Categorias'
-    assert_text natal.name
+    assert_text promo.name
   end
 
   test 'remove category promotion' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'passpass', name: 'Testador')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                              code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                              expiration_date: '25/12/2021', user: usuario)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
     categoria = Category.create!(name: 'Legumes', code: 'LEGU')
-    Use.create!(promotion_id: natal.id, category_id: categoria.id)
+    Use.create!(promotion_id: promo.id, category_id: categoria.id)
 
     login_as usuario, scope: :user
-    visit promotion_path(natal)
+    visit promotion_path(promo)
     assert_text categoria.name
     click_on 'Aplicar promoção'
     click_on 'Aplicar promoção'
@@ -323,15 +279,13 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'apply promotion to categories' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'passpass', name: 'Testador')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                              code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                              expiration_date: '25/12/2021', user: usuario)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
     categoria1 = Category.create!(name: 'Cimento', code: 'CPIV')
     categoria2 = Category.create!(name: 'Brita', code: 'BRIT')
 
     login_as usuario, scope: :user
-    visit promotion_path(natal)
+    visit promotion_path(promo)
     click_on 'Aplicar promoção'
     check(categoria1.name)
     check(categoria2.name)

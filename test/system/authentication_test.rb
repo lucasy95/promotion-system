@@ -18,7 +18,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'sign in' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     visit root_path
     click_on 'Entrar'
@@ -37,7 +37,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'logout' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     login_as usuario, scope: :user
 
@@ -85,7 +85,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'email already in use' do
-    usuario = User.create!(email: 'usuario01@iugu.com.br', password: 'pass123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     visit root_path
     click_on 'Cadastrar'
@@ -109,7 +109,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'wrong password' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     visit root_path
     click_on 'Entrar'
@@ -123,12 +123,12 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'change password' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     visit root_path
     click_on 'Entrar'
-    fill_in 'Email', with: 'testando@iugu.com.br'
-    fill_in 'Senha', with: 'senha123'
+    fill_in 'Email', with: usuario.email
+    fill_in 'Senha', with: usuario.password
     within ".actions" do
       click_on 'Entrar'
     end
@@ -145,13 +145,13 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'change password error' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
+    usuario = Fabricate(:user, password: 'senha123')
 
     usuario.change_pass(123456)
 
     visit root_path
     click_on 'Entrar'
-    fill_in 'Email', with: 'testando@iugu.com.br'
+    fill_in 'Email', with: usuario.email
     fill_in 'Senha', with: 'senha123'
     within ".actions" do
       click_on 'Entrar'

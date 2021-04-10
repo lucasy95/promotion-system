@@ -2,23 +2,23 @@ require 'application_system_test_case'
 
 class CategoriesTest < ApplicationSystemTestCase
   test 'view categories' do
-    Category.create!(name: 'Produto Testando', code: 'TESTE')
-    Category.create!(name: 'Produto Testando Dois', code: 'TESTE2')
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'test123', name: 'Teste')
+    categoria1 = Fabricate(:category)
+    categoria2 = Fabricate(:category)
+    usuario = Fabricate(:user)
 
     login_as usuario, scope: :user
     visit root_path
     click_on 'Categorias'
 
     assert_text 'CATEGORIAS'
-    assert_text 'Produto Testando'
-    assert_text 'TESTE'
-    assert_text 'Produto Testando Dois'
-    assert_text 'TESTE2'
+    assert_text categoria1.name
+    assert_text categoria1.code
+    assert_text categoria2.name
+    assert_text categoria2.code
   end
 
   test 'create a new category' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'test123', name: 'Teste')
+    usuario = Fabricate(:user)
 
     login_as usuario, scope: :user
     visit root_path
@@ -34,8 +34,8 @@ class CategoriesTest < ApplicationSystemTestCase
   end
 
   test 'edit category' do
-    category = Category.create!(name: 'Produto Teste', code: 'TESTE')
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
+    category = Fabricate(:category)
+    usuario = Fabricate(:user)
 
     login_as usuario, scope: :user
     visit category_path(category)
@@ -48,15 +48,15 @@ class CategoriesTest < ApplicationSystemTestCase
   end
 
   test 'delete category' do
-    category = Category.create!(name: 'Produto Teste', code: 'TESTE')
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
+    category = Fabricate(:category)
+    usuario = Fabricate(:user)
 
     login_as usuario, scope: :user
     visit category_path(category)
-    assert_text 'Produto Teste'
+    assert_text category.name
     click_on 'Deletar'
     assert_current_path categories_path
-    assert_no_text 'Produto Teste'
+    assert_no_text category.name
   end
 
   test 'dont view category link without login' do
@@ -72,7 +72,7 @@ class CategoriesTest < ApplicationSystemTestCase
   end
 
   test 'dont view categories details without login' do
-    categoria_bebidas = Category.create!(name: 'Bebidas', code: 'BEBI')
+    categoria_bebidas = Fabricate(:category)
 
     visit category_path(categoria_bebidas)
 
@@ -80,7 +80,7 @@ class CategoriesTest < ApplicationSystemTestCase
   end
 
   test 'dont edit categories without login' do
-    categoria_bebidas = Category.create!(name: 'Bebidas', code: 'BEBI')
+    categoria_bebidas = Fabricate(:category)
 
     visit edit_category_path(categoria_bebidas)
 
@@ -92,7 +92,5 @@ class CategoriesTest < ApplicationSystemTestCase
 
     assert_current_path new_user_session_path
   end
-
-
 
 end

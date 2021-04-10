@@ -3,12 +3,9 @@ require 'application_system_test_case'
 class CouponsTest < ApplicationSystemTestCase
 
   test 'disable a coupon' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 1,
-                          description: 'Promoção de Cyber Monday',
-                          code: 'CYBER15', discount_rate: 15,
-                          expiration_date: '22/12/2033', user: usuario)
-    coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
+    coupon = Coupon.create!(code: 'VERAO-0001', promotion: promotion)
 
     login_as usuario, scope: :user
     visit promotion_path(promotion)
@@ -21,11 +18,8 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'enable a coupon' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Cyber Monday', coupon_quantity: 1,
-                          description: 'Promoção de Cyber Monday',
-                          code: 'CYBER15', discount_rate: 15,
-                          expiration_date: '22/12/2033', user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
     coupon = Coupon.create!(code: 'NATAL10-0001', promotion: promotion)
 
     login_as usuario, scope: :user
@@ -44,12 +38,10 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'search a coupon and finds unique coupon' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 10,
-                                      expiration_date: '25/12/2021', user: usuario)
-    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: natal)
-    coupon1 = Coupon.create!(code: 'NATAL21-0001', promotion: natal)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
+    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: promo)
+    coupon1 = Coupon.create!(code: 'NATAL21-0001', promotion: promo)
 
     login_as usuario, scope: :user
     visit root_path
@@ -64,11 +56,9 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'search a coupon and finds nothing' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 10,
-                                      expiration_date: '25/12/2021', user: usuario)
-    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: natal)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
+    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: promo)
 
     login_as usuario, scope: :user
     visit root_path
@@ -82,11 +72,9 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'search coupon using route without login' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'pass123', name: 'Teste')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                                      expiration_date: '25/12/2021', user: usuario)
-    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: natal)
+    usuario = Fabricate(:user)
+    promo = Fabricate(:promotion)
+    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: promo)
 
     visit search_coupons_path(buscar: 'NATAL21-0005')
 

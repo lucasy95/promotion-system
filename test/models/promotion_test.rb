@@ -16,52 +16,44 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'code must be uniq' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
-    promotion = Promotion.new(code: 'NATAL10')
+    usuario = Fabricate(:user)
+    promo1 = Fabricate(:promotion)
+    promotion = Promotion.new(code: promo1.code)
 
     refute promotion.valid?
     assert_includes promotion.errors[:code], 'já está em uso'
-
   end
 
   test 'name must be uniq' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
-    promotion = Promotion.new(name: 'Natal')
+    usuario = Fabricate(:user)
+    promo1 = Fabricate(:promotion)
+    promotion = Promotion.new(name: promo1.name)
 
     refute promotion.valid?
     assert_includes promotion.errors[:name], 'já está em uso'
-
   end
 
   test 'generate_coupons! successfully' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
+
     promotion.generate_coupons!
     assert promotion.coupons.size == promotion.coupon_quantity
-    assert promotion.coupons.first.code == 'NATAL10-0001'
+    assert promotion.coupons.first.code == 'VERAO0-0001'
   end
 
   test 'generate_coupons! cannot be called twice' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    promotion = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                      code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                      expiration_date: '22/12/2033', user: usuario)
+    usuario = Fabricate(:user)
+    promotion = Fabricate(:promotion)
     Coupon.create!(code: 'TEST123', promotion: promotion)
+
     assert_no_difference 'Coupon.count' do
       promotion.generate_coupons!
     end
   end
 
   test '.search exact promotion' do  #(.) método de classe convenção
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
+    usuario = Fabricate(:user)
     natalv = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
                                code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
                                expiration_date: '22/12/2033', user: usuario)
