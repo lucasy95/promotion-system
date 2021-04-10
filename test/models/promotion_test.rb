@@ -39,7 +39,7 @@ class PromotionTest < ActiveSupport::TestCase
 
     promotion.generate_coupons!
     assert promotion.coupons.size == promotion.coupon_quantity
-    assert promotion.coupons.first.code == 'VERAO0-0001'
+    assert promotion.coupons.first.code == "#{promotion.code}-0001"
   end
 
   test 'generate_coupons! cannot be called twice' do
@@ -52,50 +52,35 @@ class PromotionTest < ActiveSupport::TestCase
     end
   end
 
-  test '.search exact promotion' do  #(.) método de classe convenção
-    usuario = Fabricate(:user)
-    natalv = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                               code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                               expiration_date: '22/12/2033', user: usuario)
-    pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
-                               code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
-                               expiration_date: '04/04/2033', user: usuario)
+  test '.search exact promotion' do
+    promo1 = Fabricate(:promotion, name: 'Inverno',
+                        description: 'Promoção de Inverno')
+    promo2 = Fabricate(:promotion)
 
-    result = Promotion.search('Natal')
+    result = Promotion.search('Inverno')
 
-    assert_includes result, natalv
-    refute_includes result, pascoav
+    assert_includes result, promo1
+    refute_includes result, promo2
   end
 
   test '.search by partial' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    natal = Promotion.create!(name: 'Natal 2021', description: 'Promoção de Natal 21',
-                                      code: 'NATAL21', discount_rate: 10, coupon_quantity: 100,
-                                      expiration_date: '25/12/2021', user: usuario)
-    pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
-                                       code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
-                                       expiration_date: '04/04/2033', user: usuario)
-    natal22 = Promotion.create!(name: 'Natal 2022', description: 'Promoção de Natal 22',
-                                       code: 'NATAL22', discount_rate: 15, coupon_quantity: 100,
-                                       expiration_date: '25/12/2022', user: usuario)
+    natal21 = Fabricate(:promotion, name: 'Natal 21')
+    pascoa = Fabricate(:promotion, name: 'Páscoa',
+                        description: 'Promoção de Páscoa')
+    natal22 = Fabricate(:promotion, name: 'Natal 22')
 
     result = Promotion.search('Natal')
 
-    assert_includes result, natal
+    assert_includes result, natal21
     assert_includes result, natal22
-    refute_includes result, pascoav
+    refute_includes result, pascoa
   end
 
   test '.search finds nothing' do
-    usuario = User.create!(email: 'testando@iugu.com.br', password: 'senha123', name: 'Teste')
-    natalv = Promotion.create!(name: 'Natal', description: 'Promoção de Natal',
-                               code: 'NATAL10', discount_rate: 10, coupon_quantity: 100,
-                               expiration_date: '22/12/2033', user: usuario)
-    pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
-                                code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
-                                expiration_date: '04/04/2033', user: usuario)
+    promo1 = Fabricate(:promotion, name: 'Natal')
+    promo2 = Fabricate(:promotion, name: 'Páscoa')
 
-    result = Promotion.search('Aniversario')
+    result = Promotion.search('Aniversário')
 
     assert_empty result
   end

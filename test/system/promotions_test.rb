@@ -184,8 +184,7 @@ class PromotionsTest < ApplicationSystemTestCase
 
   test 'search promotions by term and finds results' do
     usuario = Fabricate(:user)
-    pascoav = Promotion.create!
-                        (name: 'Páscoa', description: 'Promoção de Páscoa',
+    pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
                          code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
                          expiration_date: '04/04/2033', user: usuario)
     promo1 = Fabricate(:promotion)
