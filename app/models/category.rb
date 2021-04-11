@@ -7,10 +7,6 @@ class Category < ApplicationRecord
   validates :code, length: { minimum: 4 }
 
   def category_filter
-    unless promotions.any?
-      name
-    else
-    end
+    name unless promotions.any?
   end
-
 end

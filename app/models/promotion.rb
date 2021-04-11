@@ -6,7 +6,7 @@ class Promotion < ApplicationRecord
   has_many :uses
   has_many :categories, through: :uses
 
-  has_one :promotion_approval  #só tem um aprovar
+  has_one :promotion_approval  # só tem um aprovar
   has_one :approver, through: :promotion_approval, source: :user
 
   validates :name, :code, :discount_rate, :coupon_quantity, :expiration_date, presence: true
@@ -14,10 +14,11 @@ class Promotion < ApplicationRecord
 
   def generate_coupons!
     return if coupons?
-      (1..coupon_quantity).each do |number|  #omite o self.
-         coupons.create!(code: "#{code}-#{'%04d' % number}")
-         #Coupon.create!(code: "#{code}-#{'%04d' % number}", promotion: self)
-      end
+
+    (1..coupon_quantity).each do |number| # omite o self.
+      coupons.create!(code: "#{code}-#{'%04d' % number}")
+      # Coupon.create!(code: "#{code}-#{'%04d' % number}", promotion: self)
+    end
   end
 
   def coupons?
@@ -35,6 +36,5 @@ class Promotion < ApplicationRecord
   def can_approve?(current_user)
     user != current_user
   end
-
 end
 # gem kaminari

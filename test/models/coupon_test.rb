@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class CouponTest < ActiveSupport::TestCase
   test '.buscar finds nothing' do
@@ -19,7 +19,6 @@ class CouponTest < ActiveSupport::TestCase
     result = Coupon.buscar('NATAL21-0002')
 
     assert_includes result, coupon
-    refute_includes result, cupom
+    assert_not_includes result, cupom
   end
-
 end

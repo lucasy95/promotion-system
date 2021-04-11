@@ -1,26 +1,26 @@
 class CategoriesController < ApplicationController
-  before_action :authenticate_user!, only: %i[ index show edit new create destroy update ]
+  before_action :authenticate_user!, only: %i[index show edit new create destroy update]
 
-    def index
-  		@categories = Category.all
-  	end
+  def index
+    @categories = Category.all
+  end
 
-    def show
-      @category = Category.find(params[:id])
+  def show
+    @category = Category.find(params[:id])
+  end
+
+  def new
+    @category = Category.new
+  end
+
+  def create
+    @category = Category.new(category_params)
+    if @category.save
+      redirect_to categories_path
+    else
+      render :new
     end
-
-    def new
-      @category = Category.new
-    end
-
-    def create
-      @category = Category.new(category_params)
-        if @category.save
-          redirect_to categories_path
-        else
-          render :new
-        end
-    end
+  end
 
   def edit
     @category = Category.find(params[:id])
@@ -41,8 +41,9 @@ class CategoriesController < ApplicationController
     redirect_to categories_path
   end
 
-private
-    def category_params
-      params.require(:category).permit(:name, :code, :promotion_id)
-    end
+  private
+
+  def category_params
+    params.require(:category).permit(:name, :code, :promotion_id)
+  end
 end

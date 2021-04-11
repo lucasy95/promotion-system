@@ -1,0 +1,24 @@
+require:
+  - 'rubocop-rails'
+AllCops:
+ TargetRubyVersion: 3.0.1
+ NewCops: enable
+ Exclude:
+   - 'bin/**/*'
+   - 'config/**/*'
+   - 'db/**/*'
+   - 'node_modules/**/*'
+   - 'vendor/**/*'
+Style/AsciiComments:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+Style/Documentation:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+ Enabled: false
+Metrics/BlockLength:
+ IgnoredMethods: ['test']
+Metrics/ClassLength:
+  Exclude:
+    - 'test/**/*'

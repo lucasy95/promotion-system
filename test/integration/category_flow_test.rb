@@ -1,9 +1,8 @@
 require 'test_helper'
 
 class CategoryFlowTest < ActionDispatch::IntegrationTest
-
   test 'cant create a category without login' do
-    post "/categories", params: {category: {name: 'Cereais', code: 'CERE'}}
+    post '/categories', params: { category: { name: 'Cereais', code: 'CERE' } }
 
     assert_redirected_to new_user_session_path
   end
@@ -19,10 +18,8 @@ class CategoryFlowTest < ActionDispatch::IntegrationTest
   test 'cant edit a category without login' do
     categoria = Category.create!(name: 'Areia', code: 'SAND')
 
-    patch category_path(Category.last), params: { category: { name: "Gesso" } }
+    patch category_path(Category.last), params: { category: { name: 'Gesso' } }
 
     assert_redirected_to new_user_session_path
   end
-
-
 end

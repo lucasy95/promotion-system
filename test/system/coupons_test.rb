@@ -1,7 +1,6 @@
 require 'application_system_test_case'
 
 class CouponsTest < ApplicationSystemTestCase
-
   test 'disable a coupon' do
     usuario = Fabricate(:user)
     promotion = Fabricate(:promotion)
@@ -12,8 +11,8 @@ class CouponsTest < ApplicationSystemTestCase
     click_on 'Desabilitar'
 
     assert_text "Cupom #{coupon.code} desabilitado com sucesso!"
-    assert_text "#{coupon.code}"
-    assert_text "(DESABILITADO)"
+    assert_text coupon.code.to_s
+    assert_text '(DESABILITADO)'
     assert_no_link 'Desabilitar'
   end
 
@@ -27,13 +26,13 @@ class CouponsTest < ApplicationSystemTestCase
     click_on 'Desabilitar'
 
     assert_text "Cupom #{coupon.code} desabilitado com sucesso!"
-    assert_text "#{coupon.code}"
-    assert_text "(DESABILITADO)"
+    assert_text coupon.code.to_s
+    assert_text '(DESABILITADO)'
     assert_no_link 'Desabilitar'
     click_on 'Habilitar'
     assert_text "Cupom #{coupon.code} habilitado com sucesso!"
-    assert_text "#{coupon.code}"
-    assert_text "(ATIVO)"
+    assert_text coupon.code.to_s
+    assert_text '(ATIVO)'
     assert_no_link 'Habilitar'
   end
 

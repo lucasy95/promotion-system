@@ -1,7 +1,7 @@
 class Api::V1::ApiController < ActionController::API
-rescue_from ActiveRecord::RecordNotFound, with: :not_found_error
-rescue_from ActionController::ParameterMissing, with: :param_miss
-respond_to :json
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found_error
+  rescue_from ActionController::ParameterMissing, with: :param_miss
+  respond_to :json
 
   private
 

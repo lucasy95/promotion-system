@@ -7,7 +7,7 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
 
     get "/api/v1/coupons/#{coupon.code}"
 
-    assert_response :success  #ou status 200
+    assert_response :success  # ou status 200
     assert_equal coupon.code, response.parsed_body['code']
   end
 
@@ -26,10 +26,10 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
     promotion = Fabricate(:promotion)
     coupons = Coupon.all
 
-    get "/api/v1/coupons"
+    get '/api/v1/coupons'
 
     promotion.generate_coupons!
-    assert_response :success  #ou status 200
+    assert_response :success  # ou status 200
     assert_equal coupons.count, promotion.coupon_quantity
   end
 
@@ -39,13 +39,13 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
 
     get "/api/v1/coupons/#{coupon.code}"
 
-    assert_response :success  #ou status 200
+    assert_response :success  # ou status 200
     body = JSON.parse(response.body, symbolize_names: true)
     assert_equal promotion.discount_rate.to_s, body[:discount_rate]
   end
 
   test 'coupon not found' do
-    get "/api/v1/coupons/0"
+    get '/api/v1/coupons/0'
 
     assert_response 404
   end
@@ -53,7 +53,7 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   test 'check if the coupon is used' do
     usuario = Fabricate(:user)
     promotion = Fabricate(:promotion)
-    coupon = Coupon.create!(code: 'NATAL21-0001' , promotion: promotion)
+    coupon = Coupon.create!(code: 'NATAL21-0001', promotion: promotion)
 
     login_as usuario, scope: :user
     post "/api/v1/coupons/#{coupon.code}/usado"
@@ -68,7 +68,7 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
     promo = Fabricate(:promotion)
 
     login_as usuario, scope: :user
-    post "/api/v1/coupons", params: { coupon: {code: 'PASCOA21-0003', promotion_id: promo.id}}
+    post '/api/v1/coupons', params: { coupon: { code: 'PASCOA21-0003', promotion_id: promo.id } }
 
     assert_response 201
   end
@@ -78,16 +78,16 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
     promo = Fabricate(:promotion)
 
     login_as usuario, scope: :user
-    post "/api/v1/coupons", params: { coupon: {code: 'PASCOA21-0003'}}
+    post '/api/v1/coupons', params: { coupon: { code: 'PASCOA21-0003' } }
 
     assert_response 422
   end
 
   test 'update coupon' do
     promo = Fabricate(:promotion)
-    coupon = Coupon.create!(code: 'NATAL21-0005' , promotion: promo)
+    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: promo)
 
-    patch "/api/v1/coupons/#{coupon.code}", params: { coupon: {code: 'PASCOA21-0003'}}
+    patch "/api/v1/coupons/#{coupon.code}", params: { coupon: { code: 'PASCOA21-0003' } }
 
     assert_response 200
     coupon.reload
@@ -96,7 +96,7 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
 
   test 'cant update coupon' do
     promo = Fabricate(:promotion)
-    coupon = Coupon.create!(code: 'NATAL21-0005' , promotion: promo)
+    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: promo)
 
     patch "/api/v1/coupons/#{coupon.code}", params: {}
 
@@ -111,5 +111,4 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
 
     assert_response 204
   end
-
 end

@@ -24,7 +24,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: usuario.email
     fill_in 'Senha', with: usuario.password
-    within ".actions" do
+    within '.actions' do
       click_on 'Entrar'
     end
 
@@ -115,7 +115,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: 'test@iugu.com.br'
     fill_in 'Senha', with: '123456'
-    within ".actions" do
+    within '.actions' do
       click_on 'Entrar'
     end
 
@@ -129,7 +129,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     click_on 'Entrar'
     fill_in 'Email', with: usuario.email
     fill_in 'Senha', with: usuario.password
-    within ".actions" do
+    within '.actions' do
       click_on 'Entrar'
     end
     visit perfil_index_path
@@ -137,7 +137,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     fill_in 'Nova senha', with: 'senha678'
     fill_in 'Confirmação de senha', with: 'senha678'
     fill_in 'Senha atual', with: usuario.password
-    within ".actions" do
+    within '.actions' do
       click_on 'Trocar senha'
     end
     assert_text 'Sua senha foi trocada com sucesso'
@@ -147,16 +147,15 @@ class AuthenticationTest < ApplicationSystemTestCase
   test 'change password error' do
     usuario = Fabricate(:user, password: 'senha123')
 
-    usuario.change_pass(123456)
+    usuario.change_pass(123_456)
 
     visit root_path
     click_on 'Entrar'
     fill_in 'Email', with: usuario.email
     fill_in 'Senha', with: 'senha123'
-    within ".actions" do
+    within '.actions' do
       click_on 'Entrar'
     end
     assert_text 'Email ou senha inválida'
   end
-
 end

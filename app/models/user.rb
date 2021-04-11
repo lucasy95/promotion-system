@@ -10,10 +10,8 @@ class User < ApplicationRecord
 
   validates :name, presence: true
 
-
   def change_pass(new_pass)
     self.password = new_pass
     save
   end
-
 end

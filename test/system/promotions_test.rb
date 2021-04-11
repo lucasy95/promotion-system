@@ -1,7 +1,6 @@
 require 'application_system_test_case'
 
 class PromotionsTest < ApplicationSystemTestCase
-
   test 'view promotions' do
     usuario = Fabricate(:user)
     promotion1 = Fabricate(:promotion)
@@ -10,7 +9,7 @@ class PromotionsTest < ApplicationSystemTestCase
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-    #.strftime('%d/%m/%Y')
+    # .strftime('%d/%m/%Y')
     assert_text promotion1.name
     assert_text promotion1.description
     assert_text '25,00%'
@@ -185,15 +184,15 @@ class PromotionsTest < ApplicationSystemTestCase
   test 'search promotions by term and finds results' do
     usuario = Fabricate(:user)
     pascoav = Promotion.create!(name: 'Páscoa', description: 'Promoção de Páscoa',
-                         code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
-                         expiration_date: '04/04/2033', user: usuario)
+                                code: 'PASC10', discount_rate: 15, coupon_quantity: 100,
+                                expiration_date: '04/04/2033', user: usuario)
     promo1 = Fabricate(:promotion)
     promo2 = Fabricate(:promotion)
 
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-    within ".bpromocao" do
+    within '.bpromocao' do
       fill_in 'Buscar promoção', with: 'Verão'
       click_on 'Buscar'
     end
@@ -211,7 +210,7 @@ class PromotionsTest < ApplicationSystemTestCase
     login_as usuario, scope: :user
     visit root_path
     click_on 'Promoções'
-    within ".bpromocao" do
+    within '.bpromocao' do
       fill_in 'Buscar promoção', with: 'Dia das crianças'
       click_on 'Buscar'
     end
@@ -232,7 +231,6 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'user approves promotion' do
-    usuario1 = Fabricate(:user)
     usuario2 = Fabricate(:user)
     promo = Fabricate(:promotion)
 
@@ -291,5 +289,4 @@ class PromotionsTest < ApplicationSystemTestCase
     click_on 'Aplicar promoção'
     assert_text 'Cimento, Brita'
   end
-
 end
