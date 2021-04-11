@@ -18,4 +18,5 @@ class CouponsController < ApplicationController
     @coupons = Coupon.buscar(params[:buscarcupom])
     render :index
   end
+
 end

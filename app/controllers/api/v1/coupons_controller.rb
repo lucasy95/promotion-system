@@ -14,12 +14,17 @@ class Api::V1::CouponsController < Api::V1::ApiController
                                            :expiration_date],
                                             except: [:id, :promotion_id,
                                                      :created_at, :updated_at])
-    #render json: { expiration_date: @coupon.promotion.expiration_date }
   end
 
   def index
     @coupons = Coupon.all
     render json: @coupons
+  end
+
+  def usado
+    @coupon = Coupon.find_by!(code: params[:code])
+    @coupon.usado!
+    head 200
   end
 
 end

@@ -21,7 +21,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :coupons, only: [ :show, :index ], param: :code
+      resources :coupons, only: [ :show, :index ], param: :code  do
+        post 'usado', on: :member
+      end
     end
   end
 
