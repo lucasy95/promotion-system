@@ -27,4 +27,31 @@ class Api::V1::CouponsController < Api::V1::ApiController
     head 200
   end
 
+  def create
+    @coupon = Coupon.new(cp_params)
+      if @coupon.save
+        head 201
+      else
+        head 422
+      end
+  end
+
+  def update
+    @coupon = Coupon.find_by!(code: params[:code])
+    if @coupon.update!(cp_params)
+      head 200
+    else
+      head 422
+    end
+  end
+
+  def destroy
+    @coupon = Coupon.find_by!(code: params[:code])
+    @coupon.destroy
+  end
+
+  private
+      def cp_params
+        params.require(:coupon).permit(:code, :promotion_id)
+      end
 end
