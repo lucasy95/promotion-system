@@ -2,10 +2,14 @@ class Coupon < ApplicationRecord
   belongs_to :promotion
 
   enum status: {active: 0, disabled: 5}
-  delegate :discount_rate, to: :promotion
+  delegate :discount_rate, to: :promotion #API
 
-  def discount_rate
-    promotion.discount_rate
+  def expiration_date
+    promotion.expiration_date.strftime('%d/%m/%Y')
+  end
+
+  def promotion_name
+    promotion.name
   end
 
   def self.buscar(query)

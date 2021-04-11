@@ -2,7 +2,6 @@ require 'test_helper'
 
 class PromotionApiTest < ActionDispatch::IntegrationTest
   test 'show coupon' do
-    usuario = Fabricate(:user)
     promotion = Fabricate(:promotion)
     coupon = Coupon.create!(code: 'NATAL21-0001', promotion: promotion)
 
@@ -13,7 +12,6 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'check if the coupon is active' do
-    usuario = Fabricate(:user)
     promotion = Fabricate(:promotion)
     coupon = Coupon.create!(code: 'NATAL21-0001', promotion: promotion)
 
@@ -25,7 +23,6 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'check coupons index' do
-    usuario = Fabricate(:user)
     promotion = Fabricate(:promotion)
     coupons = Coupon.all
 
@@ -37,7 +34,6 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'check discount rate' do
-    usuario = Fabricate(:user)
     promotion = Fabricate(:promotion)
     coupon = Coupon.create!(code: 'NATAL21-0001', promotion: promotion)
 
@@ -49,7 +45,7 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
   end
 
   test 'coupon not found' do
-    get "/api/v1/coupons/0", as: :json
+    get "/api/v1/coupons/0"
 
     assert_response 404
   end
