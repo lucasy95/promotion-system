@@ -16,7 +16,7 @@ class CategoryFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cant edit a category without login' do
-    categoria = Category.create!(name: 'Areia', code: 'SAND')
+    Category.create!(name: 'Areia', code: 'SAND')
 
     patch category_path(Category.last), params: { category: { name: 'Gesso' } }
 

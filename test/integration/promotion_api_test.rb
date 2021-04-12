@@ -75,7 +75,7 @@ class PromotionApiTest < ActionDispatch::IntegrationTest
 
   test 'cant create coupon' do
     usuario = Fabricate(:user)
-    promo = Fabricate(:promotion)
+    Fabricate(:promotion)
 
     login_as usuario, scope: :user
     post '/api/v1/coupons', params: { coupon: { code: 'PASCOA21-0003' } }

@@ -109,7 +109,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   end
 
   test 'wrong password' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
 
     visit root_path
     click_on 'Entrar'

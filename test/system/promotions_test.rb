@@ -168,7 +168,7 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'view promotion details without login' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
     promotion = Fabricate(:promotion)
 
     visit promotion_path(promotion)
@@ -221,8 +221,8 @@ class PromotionsTest < ApplicationSystemTestCase
   end
 
   test 'search promotions using route without login' do
-    usuario = Fabricate(:user)
-    promo = Fabricate(:promotion)
+    Fabricate(:user)
+    Fabricate(:promotion)
 
     visit search_promotions_path(buscar: 'promo')
 

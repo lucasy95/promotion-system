@@ -16,7 +16,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'code must be uniq' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
     promo1 = Fabricate(:promotion)
     promotion = Promotion.new(code: promo1.code)
 
@@ -25,7 +25,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'name must be uniq' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
     promo1 = Fabricate(:promotion)
     promotion = Promotion.new(name: promo1.name)
 
@@ -34,7 +34,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'generate_coupons! successfully' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
     promotion = Fabricate(:promotion)
 
     promotion.generate_coupons!
@@ -43,7 +43,7 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test 'generate_coupons! cannot be called twice' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
     promotion = Fabricate(:promotion)
     Coupon.create!(code: 'TEST123', promotion: promotion)
 
@@ -77,8 +77,8 @@ class PromotionTest < ActiveSupport::TestCase
   end
 
   test '.search finds nothing' do
-    promo1 = Fabricate(:promotion, name: 'Natal')
-    promo2 = Fabricate(:promotion, name: 'Páscoa')
+    Fabricate(:promotion, name: 'Natal')
+    Fabricate(:promotion, name: 'Páscoa')
 
     result = Promotion.search('Aniversário')
 

@@ -28,7 +28,7 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cant generate coupons without login' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
     promotion = Fabricate(:promotion)
 
     # post "/promotions/#{promotion.id}/generate_coupons"  ou
@@ -38,7 +38,7 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cant delete a promotion without login' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
     promocao = Fabricate(:promotion)
 
     delete promotion_path(promocao)
@@ -47,8 +47,8 @@ class PromotionFlowTest < ActionDispatch::IntegrationTest
   end
 
   test 'cant edit a promotion without login' do
-    usuario = Fabricate(:user)
-    promocao = Fabricate(:promotion)
+    Fabricate(:user)
+    Fabricate(:promotion)
 
     patch promotion_path(Promotion.last), params: { promotion: { name: 'Pascoa' } }
 

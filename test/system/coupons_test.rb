@@ -39,8 +39,8 @@ class CouponsTest < ApplicationSystemTestCase
   test 'search a coupon and finds unique coupon' do
     usuario = Fabricate(:user)
     promo = Fabricate(:promotion)
-    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: promo)
-    coupon1 = Coupon.create!(code: 'NATAL21-0001', promotion: promo)
+    Coupon.create!(code: 'NATAL21-0005', promotion: promo)
+    Coupon.create!(code: 'NATAL21-0001', promotion: promo)
 
     login_as usuario, scope: :user
     visit root_path
@@ -57,7 +57,7 @@ class CouponsTest < ApplicationSystemTestCase
   test 'search a coupon and finds nothing' do
     usuario = Fabricate(:user)
     promo = Fabricate(:promotion)
-    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: promo)
+    Coupon.create!(code: 'NATAL21-0005', promotion: promo)
 
     login_as usuario, scope: :user
     visit root_path
@@ -71,9 +71,9 @@ class CouponsTest < ApplicationSystemTestCase
   end
 
   test 'search coupon using route without login' do
-    usuario = Fabricate(:user)
+    Fabricate(:user)
     promo = Fabricate(:promotion)
-    coupon = Coupon.create!(code: 'NATAL21-0005', promotion: promo)
+    Coupon.create!(code: 'NATAL21-0005', promotion: promo)
 
     visit search_coupons_path(buscar: 'NATAL21-0005')
 

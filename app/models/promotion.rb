@@ -1,12 +1,12 @@
 class Promotion < ApplicationRecord
   belongs_to :user
 
-  has_many :coupons
+  has_many :coupons, dependent: :destroy
 
-  has_many :uses
+  has_many :uses, dependent: :destroy
   has_many :categories, through: :uses
 
-  has_one :promotion_approval  # só tem um aprovar
+  has_one :promotion_approval, dependent: :destroy
   has_one :approver, through: :promotion_approval, source: :user
 
   validates :name, :code, :discount_rate, :coupon_quantity, :expiration_date, presence: true
@@ -16,7 +16,7 @@ class Promotion < ApplicationRecord
     return if coupons?
 
     (1..coupon_quantity).each do |number| # omite o self.
-      coupons.create!(code: "#{code}-#{'%04d' % number}")
+      coupons.create!(code: "#{code}-#{format('%04d', number)}")
       # Coupon.create!(code: "#{code}-#{'%04d' % number}", promotion: self)
     end
   end

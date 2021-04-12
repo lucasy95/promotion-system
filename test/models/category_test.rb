@@ -15,6 +15,5 @@ class CategoryTest < ActiveSupport::TestCase
 
     assert_not category.valid?
     assert_includes category.errors[:code], 'já está em uso'
-    assert_includes category.errors[:name], 'já está em uso'
   end
 end
